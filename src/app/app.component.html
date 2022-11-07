@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Formulario Personas</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" id="main-container">
+<div class="row flex-lg-nowrap">
+
+
+  <div class="col">
+    <div class="e-tabs mb-3 px-3">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" href="#">Formulario Personas</a></li>
+      </ul>
+    </div>
+
+    <div class="row flex-lg-nowrap">
+      <div class="col mb-3">
+        <div class="e-panel card">
+          <div class="card-body">
+          
+            <div class="e-table">
+              <div class="table-responsive table-lg mt-3">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th class="max-width">Correo</th>
+                      <th class="sortable">Fecha de Nacimiento</th>
+                      <th>Telefono</th>
+                      <th>Region</th>
+                      <th>Comuna</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let persona of personas">
+                      <td class="align-middle">{{persona.nombre}}</td>
+                      <td class="align-middle text-center">{{persona.apellido}}</td>
+                      <td class="text-nowrap align-middle">{{persona.correo}}</td>
+                      <td class="text-nowrap align-middle">{{persona.fechaNacimiento}}</td>
+                      <td class="text-nowrap align-middle">{{persona.telefono}}</td>
+                      <td class="text-nowrap align-middle">{{persona.region}}</td>
+                      <td class="text-nowrap align-middle">{{persona.comuna}}</td>
+                      <td class="text-center align-middle">
+                        <div class="btn-group align-top">
+                            <button (click)="abrirModal(persona, 'editar')" class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" data-target="#user-form-modal">Editar</button>
+                            <button (click)="abrirModal(persona, 'eliminar')" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center px-xl-3">
+              <button  (click)="abrirModal(null!, 'nueva')" class="btn btn-success btn-block" type="button" data-toggle="modal" data-target="#user-form-modal">Nueva Persona</button>
+            </div>
+              <div>
+              <div class="form-group">
+                <label>Filtrar Por Region</label>
+                <div>
+                  <select [ngModel]="region"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <option  selected>Regiones</option>
+                    <option *ngFor="let persona of personas" value="">{{persona.region }}</option>
+                    
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Filtrar Por Comuna</label>
+                <div>
+                  <select [ngModel]="comuna"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <option  selected>Comunas</option>
+                    <option *ngFor="let persona of personas" value="">{{persona.comuna}}</option>
+                  </select>
+                </div>
+              </div>
+              
+            </div>
+            <hr class="my-3">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--crear persona Modal -->
+    <div class="modal fade" role="dialog" tabindex="-1" id="crearPersonaModal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Crear Persona</h5>
+            <button type="button" class="close" id="cerrarCrearModal" data-dismiss="modal">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="py-1">
+              <form class="form" #nuevoFormulario="ngForm" (ngSubmit)="nuevaPersona(nuevoFormulario)" novalidate="">
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Nombre</label>
+                          <input ngModel class="form-control" type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Apellido</label>
+                          <input ngModel class="form-control" type="text" name="apellido" id="apellido" placeholder="apellido" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Correo</label>
+                          <input ngModel class="form-control" type="email" name="correo" id="correo" placeholder="persona@ejemplo.com" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Fecha de Nacimiento</label>
+                          <input ngModel class="form-control" type="text" name="fechaNacimiento" id="fechaNacimiento" placeholder="dd/mm/aaaa" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Telefono</label>
+                          <input ngModel class="form-control" type="text" id="telefono" name="telefono" placeholder="+xx x xxxxxx" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Region</label>
+                          <input ngModel class="form-control" type="text" name="region" id="region" placeholder="region">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Comuna</label>
+                          <input ngModel class="form-control" type="text" id="comuna" name="comuna" placeholder="comuna">
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col d-flex justify-content-end">
+                    <button [disabled]="nuevoFormulario.invalid" class="btn btn-primary" type="submit">Crear Persona</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!--editar persona Modal -->
+        <div class="modal fade" role="dialog" tabindex="-1" id="editarPersonaModal">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Editar Persona</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="py-1">
+                  <form #editarFormulario="ngForm" class="form" novalidate="">
+                    <div class="row">
+                      <div class="col">
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Nombre</label>
+                          <input ngModel="{{personaEditar?.nombre}}" class="form-control" type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+                        </div>
+                      </div>
+                      <input type="hidden" ngModel="{{personaEditar?.id}}" name="id" id="id" class="form-control" >
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Apellido</label>
+                          <input ngModel="{{personaEditar?.apellido}}" class="form-control" type="text" name="apellido" id="apellido" placeholder="apellido" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Correo</label>
+                          <input ngModel="{{personaEditar?.correo}}" class="form-control" type="email" name="correo" id="correo" placeholder="persona@ejemplo.com" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Fecha de Nacimiento</label>
+                          <input ngModel="{{personaEditar?.fechaNacimiento}}" class="form-control" type="text" name="fechaNacimiento" id="fechaNacimiento" placeholder="dd/mm/aaaa" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Telefono</label>
+                          <input ngModel="{{personaEditar?.telefono}}" class="form-control" type="text" id="telefono" name="telefono" placeholder="+xx x xxxxxx" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Region</label>
+                          <input ngModel="{{personaEditar?.region}}" class="form-control" type="text" name="region" id="region" placeholder="region">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Comuna</label>
+                          <input ngModel="{{personaEditar?.comuna}}" class="form-control" type="text" id="comuna" name="comuna" placeholder="comuna">
+                        </div>
+                      </div>
+                    </div>
+                      
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col d-flex justify-content-end">
+
+                        <button (click)="editarPersona(editarFormulario.value)" class="btn btn-primary" type="submit">Guardar cambios</button>
+                      </div>
+                    </div>
+                  </form>
+    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+            <!--eliminar persona Modal -->
+<div class="modal fade" id="eliminarPersonaModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Eliminar Persona</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Estas seguro de eliminar a {{personaEliminar?.nombre}} </p>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="eliminarPersona(personaEliminar.id)" class="btn btn-danger" data-dismiss="modal">Si</button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+</body>
